@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hellodocker-deployment
+  name: kubetrack-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hellodocker-deployment
+      app: kubetrack-deployment
   template:
     metadata:
       labels:
-        app: hellodocker-deployment
+        app: kubetrack-deployment
     spec:
       containers:
-      - name: hellodocker-deployment
+      - name: kubetrack-deployment
         image: jamesndubuisi/hellodocker
         imagePullPolicy: IfNotPresent
         ports:
@@ -23,10 +23,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hellodocker-service
+  name: kubetrackservice
 spec:
   selector:
-    app: hellodocker-deployment
+    app: kubetrack-deployment
   ports:
   - protocol: TCP
     port: 80
