@@ -15,5 +15,6 @@ spec:
       containers:
         - name: kubetrack
           image: pro1116/kubetrack:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
