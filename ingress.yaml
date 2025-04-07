@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: kubetrack.yourdomain.com  # Change to your domain or use AWS ELB IP
+    - host: kubetrack.98.83.180.222  # Change to your domain or use AWS ELB IP
       http:
         paths:
           - path: /
