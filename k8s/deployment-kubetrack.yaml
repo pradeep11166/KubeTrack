@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubetrack-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubetrack
+  template:
+    metadata:
+      labels:
+        app: kubetrack
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node-1
+      containers:
+      - name: kubetrack
+        image: pro1116/kubetrack:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubetrack-service
+spec:
+  selector:
+    app: kubetrack
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30001
