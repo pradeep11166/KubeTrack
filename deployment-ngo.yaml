@@ -13,7 +13,7 @@ spec:
         app: ngo
     spec:
       nodeSelector:
-        kubernetes.io/hostname: node-2
+        kubernetes.io/hostname: kube-track
       containers:
       - name: ngo
         image: pro1116/ngo:latest

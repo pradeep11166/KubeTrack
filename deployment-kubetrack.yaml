@@ -13,7 +13,7 @@ spec:
         app: kubetrack
     spec:
       nodeSelector:
-        kubernetes.io/hostname: node-1
+        kubernetes.io/hostname: kube-track
       containers:
       - name: kubetrack
         image: pro1116/kubetrack:latest
