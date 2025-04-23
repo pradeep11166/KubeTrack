@@ -1,2 +1,5 @@
-# This is my portfolio website for my Devops project
-creating a CI/CD using jenkins and kubernetes and monitoring with splunk.
+# KubeTrack: Deployment of Multiple WebApplications
+creating a CI/CD using Github and jenkins.
+kubernetes for the app Deployment .
+Splunk for monitoring .
+Grafana for [pods level of monitoring .
