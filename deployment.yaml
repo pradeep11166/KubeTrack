@@ -1,0 +1,58 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubetrack-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kubetrack
+  template:
+    metadata:
+      labels:
+        app: kubetrack
+    spec:
+      containers:
+        - name: kubetrack
+          image: pro1116/kubetrack:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+
+
+
+
+
+
+
+# This deployment file is for deployment directly through kubernetes .
+
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: kubetrack-deployment
+#spec:
+#  replicas: 2
+#  selector:
+#    matchLabels:
+#      app: kubetrack
+#  template:
+#    metadata:
+#      labels:
+#        app: kubetrack
+#    spec:
+#      containers:
+#        - name: kubetrack
+#          image: pro1116/kubetrack:latest
+#          imagePullPolicy: Always
+#          ports:
+#           - containerPort: 80
+            
+            
+            
+            
+            
+            
+            
+
