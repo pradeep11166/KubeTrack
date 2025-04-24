@@ -42,25 +42,6 @@ KubeTrack leverages **Jenkins**, **Docker**, **Kubernetes**, **Prometheus**, **G
 
 ---
 
-## 📁 Project Structure
-
-KubeTrack/ 
-│ 
-├── Jenkinsfile # CI/CD pipeline definition 
-├── manifests/ # Kubernetes deployment & service YAMLs 
-│
-├── app1/ # App 1 YAMLs 
-│ 
-├── app2/ # App 2 YAMLs 
-│ └── ingress.yaml # Ingress configuration 
-├── monitoring/ # Prometheus & Grafana configs 
-├── splunk/ # Splunk log forwarding configs 
-├── argocd/ # ArgoCD application definitions 
-├── docker/ # Dockerfiles for each app 
-└── README.md # Project documentation
-
----
-
 ## 🚦 Features
 
 - 🔄 **Automated CI/CD Pipeline** using Jenkins
