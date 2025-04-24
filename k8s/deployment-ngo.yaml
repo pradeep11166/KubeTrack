@@ -17,8 +17,12 @@ spec:
       containers:
       - name: ngo
         image: pro1116/ngo:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
+        env:
+         -name: IMAGE_TAG
+         value: "${IMAGE_TAG}" 
 ---
 apiVersion: v1
 kind: Service
