@@ -16,14 +16,16 @@ spec:
         kubernetes.io/hostname: kube-track
       containers:
       - name: ngo
-        image: pro1116/ngo:latest
+        image: pro1116/ngo:${IMAGE_TAG}  # Replace dynamically in Jenkins
         imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:
-         -name: IMAGE_TAG
-         value: "${IMAGE_TAG}" 
+        - name: IMAGE_TAG
+          value: "${IMAGE_TAG}"  # Optional: expose to container as an env var
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -35,4 +37,5 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30002 
+      nodePort: 30002
+
