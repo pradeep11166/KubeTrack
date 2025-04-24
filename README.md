@@ -72,9 +72,7 @@ KubeTrack leverages **Jenkins**, **Docker**, **Kubernetes**, **Prometheus**, **G
 Set up Monitoring Stack
 
     kubectl apply -f monitoring/
-
-    Connect Splunk Forwarders for logs
-
+    
     Use Jenkins to trigger builds and deploy apps
 
     Access Grafana Dashboards
@@ -91,7 +89,7 @@ Set up Monitoring Stack
 
 🙌 Author
 Pradip Dev
-Cyber Security Enthusiast | DevOps Engineer | Full Stack Developer
+Cyber Security Enthusiast | DevOps Engineer |
 📫 Connect on LinkedIn
 📢 Feedback & Collaboration
 
