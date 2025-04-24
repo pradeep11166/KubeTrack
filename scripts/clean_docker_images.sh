@@ -6,12 +6,17 @@ REPOS=("pro1116/kubetrack" "pro1116/ngo")
 for repo in "${REPOS[@]}"; do
   echo "Cleaning up images for: $repo"
 
-  # List images for the repo sorted by creation date (newest first), skip the first 2
+  # List images sorted newest first, skip the first 2
   images_to_delete=$(docker images "$repo" --format "{{.Repository}}:{{.Tag}} {{.CreatedAt}}" | \
     sort -r -k2 | \
     awk '{print $1}' | \
     grep -v "<none>" | \
     sed -n '3,$p')
+
+  if [[ -z "$images_to_delete" ]]; then
+    echo "No old images to delete for $repo."
+    continue
+  fi
 
   # Remove old images
   for image in $images_to_delete; do
@@ -19,3 +24,4 @@ for repo in "${REPOS[@]}"; do
     docker rmi "$image"
   done
 done
+
