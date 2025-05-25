@@ -1,0 +1,82 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_HUB_USER = 'pro1116'
+        IMAGE_TAG = "1.0.${BUILD_NUMBER}"  // Use Git commit hash or dynamic build tag
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/pradeep11166/KubeTrack.git'
+            }
+        }
+
+        stage('Build and Push Images') {
+            parallel {
+                stage('Build kubetrack Image') {
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                            script {
+                                def kubetrack_image = "${DOCKER_HUB_USER}/kubetrack:${IMAGE_TAG}"
+                                sh """
+                                docker build -t ${kubetrack_image} -f ./Dockerfile-kubetrack .
+                                echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                                docker push ${kubetrack_image}
+                                """
+                                // Cleanup dangling images
+                                sh "docker image prune -f"
+                            }
+                        }
+                    }
+                }
+                stage('Build ngo Image') {
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                            script {
+                                def ngo_image = "${DOCKER_HUB_USER}/ngo:${IMAGE_TAG}"
+                                sh """
+                                docker build -t ${ngo_image} -f ./Dockerfile-ngo .
+                                echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
+                                docker push ${ngo_image}
+                                """
+                                // Cleanup dangling images
+                                sh "docker image prune -f"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Path to Kubernetes deployment files
+                    def kubetrackYaml = './k8s/deployment-kubetrack.yaml'
+                    def ngoYaml = './k8s/deployment-ngo.yaml'
+
+                    // Apply the latest deployment configurations
+                    sh """
+                    sudo systemctl restart kubelet
+                    export KUBECONFIG=/var/lib/jenkins/.kube/config
+                    kubectl apply -f ${kubetrackYaml} --validate=false
+                    kubectl apply -f ${ngoYaml} --validate=false
+                    kubectl set image deployment/kubetrack-deployment kubetrack=$DOCKER_HUB_USER/kubetrack:$IMAGE_TAG
+                    kubectl set image deployment/ngo-deployment ngo=$DOCKER_HUB_USER/ngo:$IMAGE_TAG
+                    kubectl rollout restart deployment kubetrack-deployment --namespace=default
+                    kubectl rollout restart deployment ngo-deployment --namespace=default
+                    """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh 'kubectl get pods -o wide'
+                sh 'kubectl get svc'
+            }
+        }
+    }
+}
